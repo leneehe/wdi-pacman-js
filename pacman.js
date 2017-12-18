@@ -18,7 +18,7 @@ var blinky = {
   colour: 'Cyan',
   character: 'Speedy',
   edible: false
-}
+};
 
 var pinky = {
   menu_option: '3',
@@ -26,7 +26,7 @@ var pinky = {
   colour: 'Pink',
   character: 'Bashful',
   edible: false
-}
+};
 
 var clyde = {
   menu_option: '4',
@@ -34,7 +34,9 @@ var clyde = {
   colour: 'Orange',
   character: 'Pokey',
   edible: false
-}
+};
+
+var ghosts = [inky, blinky, pinky, clyde];
 
 // replace this comment with your four ghosts setup as objects
 
