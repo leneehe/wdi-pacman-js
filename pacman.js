@@ -5,6 +5,9 @@ var powerPellets = 4;
 var dotsTotal = 240;
 var ghostScore = 200;
 var ghostsEaten = 0;
+var level = 1;
+var fruit = {name: 'Cherry', points: 100, notEaten: true};
+var unlockPoint = Infinity;
 
 // Define your ghosts here
 var inky = {
@@ -61,7 +64,7 @@ function clearScreen() {
 }
 
 function displayStats() {
-  console.log('Score: ' + score + '     Lives: ' + lives);
+  console.log('Score: ' + score + '     Lives: ' + lives + '     Level: ' + level);
 }
 
 function displayPowerPellets() {
@@ -74,6 +77,9 @@ function displayDotsLeft() {
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
+  if ((240 - dotsTotal) > unlockPoint) {
+    console.log('(f) Eat ' + fruit.name + ' / '+ fruit.points + ' points');
+  }
   if (dotsTotal >= 10) {
     console.log('(d) Eat 10 Dots');
   }
@@ -125,12 +131,12 @@ function eatGhost(ghost) {
   } else {
     lives--;
     console.log('\n' + ghost.colour + ' ' + ghost.name + ' kills Pac-Man!')
-    checkLives(lives);
+    checkLives();
   }
 }
 
-function checkLives(lives) {
-  if (lives < 0) {
+function checkLives() {
+  if (lives <= 0) {
     process.exit();
   }
 }
@@ -156,6 +162,63 @@ function eatPowerPellet() {
   } else {
     console.log('\nNo more Power-Pellet left!');
   }
+}
+
+function checkLevel() {
+  if (powerPellets <= 0 && dotsTotal <= 0) {
+    level++;
+    if (level === 2){
+      fruit.name = 'Strawberry';
+      fruit.points = 300;
+      fruit.notEaten = true;
+    } else if (level >= 3 && level <= 4) {
+      fruit.name = 'Orange';
+      fruit.points = 500;
+      fruit.notEaten = true;
+    } else if (level >= 5 && level <= 6) {
+      fruit.name = 'Apple';
+      fruit.points = 700;
+      fruit.notEaten = true;
+    } else if (level >= 7 && level <= 8) {
+      fruit.name = 'Pineapple';
+      fruit.points = 1000;
+      fruit.notEaten = true;
+    } else if (level >= 9 && level <= 10) {
+      fruit.name = 'Galaxian Spaceship';
+      fruit.points = 2000;
+      fruit.notEaten = true;
+    } else if (level >= 11 && level <= 12) {
+      fruit.name = 'Bell';
+      fruit.points = 3000;
+      fruit.notEaten = true;
+    } else if (level >= 13) {
+      fruit.name = 'Key';
+      fruit.points = 5000;
+      fruit.notEaten = true;
+    }
+
+    setFruitUnlockPoint();
+    powerPellets = 4;
+    dotsTotal = 240;
+    for (var ghost of ghosts) {
+      ghost.edible = false;
+    }
+  }
+
+  if (level === 1 && fruit.notEaten) {
+    setFruitUnlockPoint();
+  }
+}
+
+function setFruitUnlockPoint() {
+  unlockPoint = Math.floor(Math.random() * (240 - 10 + 1)) + 10;
+}
+
+function eatFruit() {
+  score += fruit.points;
+  console.log('\nChomp! Eats ' + fruit.name + ' for ' + fruit.points + ' points!');
+  unlockPoint = Infinity;
+  fruit.notEaten = false;
 }
 
 
@@ -188,6 +251,13 @@ function processInput(key) {
     case 'D':
       eatDot(100);
       break;
+    case 'f':
+      if ((240 - dotsTotal) > unlockPoint) {
+        eatFruit();
+      } else {
+        console.log('\nInvalid Command!');
+      }
+      break;
     default:
       console.log('\nInvalid Command!');
   }
@@ -211,10 +281,17 @@ drawScreen();
 stdin.on('data', function(key) {
   process.stdout.write(key);
   processInput(key);
+  checkLevel();
   setTimeout(drawScreen, 600); // The command prompt will flash a message for 300 milliseoncds before it re-draws the screen. You can adjust the 300 number to increase this.
 });
 
 // Player Quits
 process.on('exit', function() {
+  clearScreen();
+  displayStats();
+  displayPowerPellets();
+  displayDotsLeft();
+  displayMenu();
+  displayPrompt();
   console.log('\n\nGame Over!\n');
 });
