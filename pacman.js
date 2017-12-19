@@ -67,7 +67,9 @@ function displayPowerPellets() {
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
   console.log('(d) Eat Dot');
-  console.log('(p) Eat Power-Pellet');
+  if (powerPellets > 0) {
+    console.log('(p) Eat Power-Pellet');
+  }
   console.log('(1) Eat Inky');
   console.log('(2) Eat Blinky');
   console.log('(3) Eat Pinky');
@@ -104,13 +106,17 @@ function checkLives(lives) {
   }
 }
 
-function eatPowerPellet(ghosts) {
-  console.log('\nChomp! Eats 1 Power-Pellet')
-  powerPellets--;
-  for (var ghost of ghosts) {
-    ghost.edible = true;
+function eatPowerPellet() {
+  if (powerPellets > 0) {
+    console.log('\nChomp! Eats 1 Power-Pellet.');
+    powerPellets--;
+    for (var ghost of ghosts) {
+      ghost.edible = true;
+    }
+    score += 50;
+  } else {
+    console.log('\nNo more Power-Pellet left!');
   }
-  score += 50;
 }
 
 
@@ -123,7 +129,7 @@ function processInput(key) {
       process.exit();
       break;
     case 'p':
-      eatPowerPellet(ghosts);
+      eatPowerPellet();
       break;
     case '1':
       eatGhost(inky);
