@@ -3,6 +3,8 @@ var score = 0;
 var lives = 2;
 var powerPellets = 4;
 var dotsTotal = 240;
+var ghostScore = 200;
+var ghostsEaten = 0;
 
 // Define your ghosts here
 var inky = {
@@ -116,7 +118,9 @@ function eatDot(dots) {
 function eatGhost(ghost) {
   if (ghost.edible) {
     console.log('\nNom! Eats ' + ghost.character + ' ' + ghost.name + '.');
-    score += 200;
+    checkGhostsEaten();
+    score += ghostScore;
+    ghostsEaten++;
     ghost.edible = false;
   } else {
     lives--;
@@ -128,6 +132,16 @@ function eatGhost(ghost) {
 function checkLives(lives) {
   if (lives < 0) {
     process.exit();
+  }
+}
+
+function checkGhostsEaten() {
+  if (ghostsEaten === 1) {
+    ghostScore = 400;
+  } else if (ghostsEaten === 2) {
+    ghostScore = 800;
+  } else if (ghostsEaten === 3) {
+    ghostScore = 1600;
   }
 }
 
