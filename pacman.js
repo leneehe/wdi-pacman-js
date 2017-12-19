@@ -2,6 +2,7 @@
 var score = 0;
 var lives = 2;
 var powerPellets = 4;
+var dotsTotal = 240;
 
 // Define your ghosts here
 var inky = {
@@ -47,6 +48,7 @@ function drawScreen() {
   setTimeout(function() {
     displayStats();
     displayPowerPellets();
+    displayDotsLeft();
     displayMenu();
     displayPrompt();
   }, 10);
@@ -64,9 +66,18 @@ function displayPowerPellets() {
   console.log('\nPower-Pellets: ' + powerPellets);
 }
 
+function displayDotsLeft() {
+  console.log('\nDots: ' + dotsTotal);
+}
+
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
-  console.log('(d) Eat Dot');
+  if (dotsTotal >= 10) {
+    console.log('(d) Eat 10 Dots');
+  }
+  if (dotsTotal >= 100) {
+    console.log('(D) Eat 100 Dots');
+  }
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
   }
@@ -92,9 +103,14 @@ function displayPrompt() {
 
 
 // Menu Options
-function eatDot() {
-  console.log('\nChomp!');
-  score += 10;
+function eatDot(dots) {
+  if (dotsTotal >= dots) {
+    console.log('\nChomp! Eats ' + dots + ' dots.');
+    dotsTotal -= dots;
+    score += dots;
+  } else{
+    console.log('\nNot enough dots left to eat.')
+  }
 }
 
 function eatGhost(ghost) {
@@ -153,7 +169,10 @@ function processInput(key) {
       eatGhost(clyde);
       break;
     case 'd':
-      eatDot();
+      eatDot(10);
+      break;
+    case 'D':
+      eatDot(100);
       break;
     default:
       console.log('\nInvalid Command!');
