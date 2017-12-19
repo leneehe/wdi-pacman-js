@@ -70,10 +70,10 @@ function displayMenu() {
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
   }
-  console.log('(1) Eat Inky');
-  console.log('(2) Eat Blinky');
-  console.log('(3) Eat Pinky');
-  console.log('(4) Eat Clyde');
+  console.log('(1) Eat Inky (' + inky.edible + ')');
+  console.log('(2) Eat Blinky (' + blinky.edible + ')');
+  console.log('(3) Eat Pinky (' + pinky.edible + ')');
+  console.log('(4) Eat Clyde (' + clyde.edible + ')');
   console.log('(q) Quit');
 }
 
