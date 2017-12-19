@@ -99,10 +99,18 @@ function eatGhost(ghost) {
 }
 
 function checkLives(lives) {
-  if (live <= 0) {
-    console.log('\n\nGame Over!\n');
+  if (lives <= 0) {
     process.exit();
   }
+}
+
+function eatPowerPellet(ghosts) {
+  console.log('\nChomp! Eats 1 Power-Pellet')
+  powerPellets--;
+  for (var ghost of ghosts) {
+    ghost.edible = true;
+  }
+  score += 50;
 }
 
 
@@ -113,6 +121,9 @@ function processInput(key) {
     case '\u0003': // This makes it so CTRL-C will quit the program
     case 'q':
       process.exit();
+      break;
+    case 'p':
+      eatPowerPellet(ghosts);
       break;
     case '1':
       eatGhost(inky);
