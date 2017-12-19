@@ -159,6 +159,12 @@ function eatPowerPellet() {
       ghost.edible = true;
     }
     score += 50;
+    setTimeout(function() {
+      for (var ghost of ghosts) {
+        ghost.edible = false;
+      }
+      drawScreen();
+    }, 10000);
   } else {
     console.log('\nNo more Power-Pellet left!');
   }
