@@ -91,8 +91,9 @@ function eatDot() {
 
 function eatGhost(ghost) {
   if (ghost.edible) {
-
-    console.log('\nNom! Eats ' + ghost.name + '.');
+    console.log('\nNom! Eats ' + ghost.character + ' ' + ghost.name + '.');
+    score += 200;
+    ghost.edible = false;
   } else {
     lives--;
     console.log('\n' + ghost.colour + ' ' + ghost.name + ' kills Pac-Man!')
@@ -101,7 +102,7 @@ function eatGhost(ghost) {
 }
 
 function checkLives(lives) {
-  if (lives <= 0) {
+  if (lives < 0) {
     process.exit();
   }
 }
