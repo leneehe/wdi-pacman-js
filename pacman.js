@@ -152,21 +152,31 @@ function checkGhostsEaten() {
 }
 
 function eatPowerPellet() {
-  if (powerPellets > 0) {
-    console.log('\nChomp! Eats 1 Power-Pellet.');
-    powerPellets--;
-    for (var ghost of ghosts) {
-      ghost.edible = true;
+  var canEat = true;
+  for (var ghost of ghosts) {
+    if (ghost.edible){
+      canEat = false;
     }
-    score += 50;
-    setTimeout(function() {
+  }
+  if (canEat) {
+    if (powerPellets > 0) {
+      console.log('\nChomp! Eats 1 Power-Pellet.');
+      powerPellets--;
       for (var ghost of ghosts) {
-        ghost.edible = false;
+        ghost.edible = true;
       }
-      drawScreen();
-    }, 10000);
-  } else {
-    console.log('\nNo more Power-Pellet left!');
+      score += 50;
+      setTimeout(function() {
+        for (var ghost of ghosts) {
+          ghost.edible = false;
+        }
+        drawScreen();
+      }, 10000);
+    } else {
+      console.log('\nNo more Power-Pellet left!');
+    }
+  } else{
+    console.log('\nNot yet! Edible ghosts are here.');
   }
 }
 
